@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>WanderWave — Corporate Trip Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- LOADER OVERLAY -->
+<div id="loader" class="loader-overlay">
+  <div class="loader-inner">
+    <div class="loader-wordmark">WanderWave</div>
+    <div class="loader-divider"></div>
+    <div class="loader-track"><div class="loader-trail"></div></div>
+    <div class="loader-msg" id="loader-msg">Initialising</div>
+    <div class="loader-dots"><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="nav" id="nav">
+  <div class="nav-logo" onclick="showPage('home')">WanderWave</div>
+  <div class="nav-pills">
+    <button class="npill active" id="np-home" onclick="showPage('home')">Home</button>
+    <button class="npill" id="np-explore" onclick="showPage('explore')">Explore</button>
+    <button class="npill" id="np-planner" onclick="showPage('planner')">Plan Trip</button>
+    <button class="npill" id="np-profile" onclick="showPage('profile')">Profile</button>
+    <button class="npill" id="np-myplans" onclick="showPage('myplans')">My Plans</button>
+  </div>
+  <button class="nav-start" onclick="showPage('planner')">Start Planning</button>
+</nav>
+
+<!-- ======= HOME ======= -->
+<div id="page-home" class="page active">
+  <div class="hero-wrap">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-blob blob1"></div>
+    <div class="hero-blob blob2"></div>
+    <div class="hero-blob blob3"></div>
+    <div class="hero-particles" id="hero-particles"></div>
+    <div class="hero-content">
+      <div class="hero-chip">Corporate Travel — Reimagined</div>
+      <h1 class="hero-h1">Plan your team's<br/><span class="hero-highlight">dream trip</span><br/>in minutes.</h1>
+      <p class="hero-p">From beaches to mountains — pick a destination, plan each day, and send the itinerary to your whole team instantly.</p>
+      <div class="hero-actions">
+        <button class="btn-pop" onclick="showPage('planner')">Start Planning</button>
+        <button class="btn-soft" onclick="showPage('explore')">Browse Destinations</button>
+      </div>
+      <div class="hero-badges">
+        <span class="hbadge">12 Destinations</span>
+        <span class="hbadge">Up to 14 Days</span>
+        <span class="hbadge">Instant Email</span>
+        <span class="hbadge">Visual Journey Map</span>
+      </div>
+    </div>
+    <div class="hero-cards-float">
+      <div class="float-card fc1">🏖️<br/><strong>Goa</strong><small>Beach vibes</small></div>
+      <div class="float-card fc2">🏔️<br/><strong>Shimla</strong><small>Mountain cool</small></div>
+      <div class="float-card fc3">🕌<br/><strong>Agra</strong><small>Heritage walk</small></div>
+      <div class="float-card fc4">🌿<br/><strong>Munnar</strong><small>Tea trails</small></div>
+    </div>
+  </div>
+
+  <div class="home-steps-section">
+    <div class="section-eyebrow">How it works</div>
+    <h2 class="section-h2">Plan a perfect trip in <span class="txt-pop">five steps</span></h2>
+    <div class="steps-row">
+      <div class="step-bubble" style="--c:#4338ca">
+        <div class="sb-icon">🗺️</div>
+        <div class="sb-num">1</div>
+        <h4>Pick Destination</h4>
+        <p>Choose from 12 amazing Indian cities</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-bubble" style="--c:#c8973a">
+        <div class="sb-icon">✈️</div>
+        <div class="sb-num">2</div>
+        <h4>Choose Route</h4>
+        <p>Flight, train, bus or cab</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-bubble" style="--c:#0c8c7a">
+        <div class="sb-icon">📅</div>
+        <div class="sb-num">3</div>
+        <h4>Set Duration</h4>
+        <p>1 to 14 days, your call</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-bubble" style="--c:#2563eb">
+        <div class="sb-icon">🏨</div>
+        <div class="sb-num">4</div>
+        <h4>Plan Each Day</h4>
+        <p>Stay, activities & food menus</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-bubble" style="--c:#7c3aed">
+        <div class="sb-icon">🚀</div>
+        <div class="sb-num">5</div>
+        <h4>Send to Team</h4>
+        <p>Email the whole crew instantly</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem">
+      <button class="btn-pop" onclick="showPage('planner')">Start Planning Now</button>
+    </div>
+  </div>
+
+  <div class="home-dest-section">
+    <div class="section-eyebrow">Top Picks</div>
+    <h2 class="section-h2">Featured <span class="txt-pop">destinations</span></h2>
+    <div class="home-dest-grid" id="home-dest-grid"></div>
+  </div>
+</div>
+
+<!-- ======= EXPLORE ======= -->
+<div id="page-explore" class="page">
+  <div class="page-top-banner" style="--bg:linear-gradient(135deg,#0f1628,#1e2d5e)">
+    <div class="ptb-content">
+      <div class="section-eyebrow" style="color:rgba(255,255,255,0.6)">Discover India</div>
+      <h1 class="ptb-title">All Destinations</h1>
+      <p>12 extraordinary places for your corporate adventures</p>
+    </div>
+    <div class="ptb-emoji">🗺️</div>
+  </div>
+  <div class="explore-body">
+    <div class="filter-chips" id="filter-chips">
+      <button class="fchip active" onclick="filterDest('all',this)">All</button>
+      <button class="fchip" onclick="filterDest('beach',this)">Beach 🏖️</button>
+      <button class="fchip" onclick="filterDest('hill',this)">Hills 🏔️</button>
+      <button class="fchip" onclick="filterDest('heritage',this)">Heritage 🏯</button>
+      <button class="fchip" onclick="filterDest('nature',this)">Nature 🌿</button>
+      <button class="fchip" onclick="filterDest('spiritual',this)">Spiritual 🕉️</button>
+    </div>
+    <div class="explore-cards" id="explore-cards"></div>
+  </div>
+</div>
+
+<!-- ======= PLANNER ======= -->
+<div id="page-planner" class="page">
+  <div class="planner-progress" id="planner-progress">
+    <div class="pp-wrap">
+      <div class="pp-steps" id="pp-steps"></div>
+      <div class="pp-bar"><div class="pp-fill" id="pp-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- Step 1: Destination -->
+  <div id="step-1" class="pstep active">
+    <div class="step-top" style="--accent:#4338ca">
+      <div class="st-emoji">🗺️</div>
+      <h2 class="st-title">Where are we going?</h2>
+      <p class="st-sub">Select a destination to begin your journey</p>
+    </div>
+    <div class="dest-grid" id="dest-grid"></div>
+  </div>
+
+  <!-- Step 2: Route -->
+  <div id="step-2" class="pstep">
+    <div class="step-top" style="--accent:#c8973a">
+      <div class="st-emoji">✈️</div>
+      <h2 class="st-title">How will you travel?</h2>
+      <p class="st-sub">Choose how your team gets there</p>
+    </div>
+    <div class="route-big-grid" id="route-big-grid"></div>
+    <div id="route-detail" class="route-detail"></div>
+    <div class="step-foot"><button class="btn-back" onclick="goStep(1)">← Back</button></div>
+  </div>
+
+  <!-- Step 3: Duration -->
+  <div id="step-3" class="pstep">
+    <div class="step-top" style="--accent:#0c8c7a">
+      <div class="st-emoji">📅</div>
+      <h2 class="st-title">How long is the trip?</h2>
+      <p class="st-sub">Set the number of days and your start date</p>
+    </div>
+    <div class="dur-layout">
+      <div class="dur-box">
+        <div class="dur-label">Trip Length</div>
+        <div class="dur-counter">
+          <button class="dur-btn" onclick="chDays(-1)">−</button>
+          <div class="dur-bubble"><span id="days-n">3</span><small>days</small></div>
+          <button class="dur-btn" onclick="chDays(1)">+</button>
+        </div>
+        <div class="dur-slider-wrap"><input type="range" min="1" max="14" value="3" id="days-slider" oninput="sliderDays(this.value)" class="dur-slider"/></div>
+        <div class="dur-presets">
+          <button class="dpreset" onclick="setDays(2)">Weekend</button>
+          <button class="dpreset" onclick="setDays(4)">Quick Trip</button>
+          <button class="dpreset" onclick="setDays(7)">Full Week</button>
+          <button class="dpreset" onclick="setDays(10)">Extended</button>
+        </div>
+      </div>
+      <div class="dur-box">
+        <div class="dur-label">Start Date</div>
+        <input type="date" id="start-date" class="big-date"/>
+        <div class="return-label" id="return-label"></div>
+        <div class="dur-label" style="margin-top:1.5rem">Team Size 👥</div>
+        <div class="dur-counter" style="justify-content:flex-start;gap:1rem">
+          <button class="dur-btn" onclick="chTeam(-1)">−</button>
+          <span class="team-n" id="team-n">10</span>
+          <button class="dur-btn" onclick="chTeam(1)">+</button>
+          <span style="font-size:0.85rem;color:var(--muted)">people</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-foot">
+      <button class="btn-back" onclick="goStep(2)">← Back</button>
+      <button class="btn-pop" onclick="goStep(4)">Plan Each Day</button>
+    </div>
+  </div>
+
+  <!-- Step 4: Day Planner -->
+  <div id="step-4" class="pstep">
+    <div class="step-top" style="--accent:#2563eb">
+      <div class="st-emoji">🏨</div>
+      <h2 class="st-title">Plan each day</h2>
+      <p class="st-sub">Navigate through the days and build your itinerary</p>
+    </div>
+    <div class="day-chips" id="day-chips"></div>
+    <div id="day-panels"></div>
+    <div class="step-foot">
+      <button class="btn-back" onclick="goStep(3)">← Back</button>
+      <button class="btn-pop" onclick="goStep(5)">See Journey Map</button>
+    </div>
+  </div>
+
+  <!-- Step 5: Map + Review + Send -->
+  <div id="step-5" class="pstep">
+    <div class="step-top" style="--accent:#7c3aed">
+      <div class="st-emoji">🎉</div>
+      <h2 class="st-title">Your trip is ready</h2>
+      <p class="st-sub">Review the journey map, then send it to your team</p>
+    </div>
+
+    <!-- Journey Map -->
+    <div class="journey-map-wrap">
+      <div class="jm-header"><span class="jm-title">Journey Overview</span></div>
+      <div class="journey-map" id="journey-map"></div>
+    </div>
+
+    <!-- Review -->
+    <div class="review-section">
+      <div class="review-header-card" id="review-header"></div>
+      <div id="review-days"></div>
+    </div>
+
+    <!-- Today's Plan Update -->
+    <div class="todays-update-box" id="todays-box">
+      <div class="tub-header">
+        <div class="tub-icon">📅</div>
+        <div>
+          <h3>Today's Plan Update</h3>
+          <p>Change today's stay, activities or food — then notify your team</p>
+        </div>
+      </div>
+      <div id="todays-day-select" class="todays-day-select"></div>
+      <div id="todays-panel" class="todays-panel"></div>
+      <div class="tub-note-row">
+        <textarea id="todays-note" placeholder="What changed? Let your team know… (e.g. 'Hotel changed, dinner moved to 8pm')" class="tub-note"></textarea>
+      </div>
+      <button class="btn-update" onclick="sendTodaysUpdate()">Send Today's Update</button>
+      <div id="update-status" class="update-status"></div>
+    </div>
+
+    <!-- SAVE PLAN -->
+    <div class="save-plan-box">
+      <div class="spb-left">
+        <div class="spb-icon">💾</div>
+        <div>
+          <h3>Save to My Plans</h3>
+          <p>Save this trip plan so you can revisit it anytime under <strong>My Plans</strong></p>
+        </div>
+      </div>
+      <button class="btn-save-plan" id="save-plan-btn" onclick="savePlan()">💾 Save Plan</button>
+      <div id="save-plan-status" class="save-plan-status"></div>
+    </div>
+
+    <!-- SEND PANEL -->
+    <div class="send-panel">
+      <div class="sp-head">
+        <div class="sp-icon">🚀</div>
+        <div><h3>Share Plan with Team</h3><p>Send your day-by-day plan to team members via email</p></div>
+      </div>
+
+      <!-- ── RECIPIENT EMAILS ── -->
+      <div class="ejs-recipient-section">
+        <div class="ejs-rec-label">Add Recipients</div>
+        <div class="email-add-row">
+          <input type="email" id="new-email" placeholder="teammate@company.com" class="email-input" onkeydown="if(event.key==='Enter')addEmail()"/>
+          <button class="btn-add-email" onclick="addEmail()">+ Add</button>
+        </div>
+        <div id="email-pills" class="email-pills"></div>
+        <div class="ejs-rec-note">Employees added in your Profile are automatically included.</div>
+      </div>
+
+      <button class="btn-send-big" id="send-btn" onclick="sendEmails()">
+        <span id="send-lbl">📧 Send Plan via Email</span>
+      </button>
+      <div id="send-status" class="send-status"></div>
+    </div>
+
+    <!-- PAYMENT SECTION -->
+    <div class="payment-section" id="payment-section">
+      <div class="pmt-header">
+        <div class="pmt-header-left">
+          <div class="pmt-icon">💳</div>
+          <div>
+            <h3>Trip Payment</h3>
+            <p>Auto-calculated cost breakdown &amp; UPI payment</p>
+          </div>
+        </div>
+        <div class="pmt-secure-badge">🔒 Secure UPI</div>
+      </div>
+
+      <!-- Cost Breakdown -->
+      <div class="pmt-breakdown" id="pmt-breakdown"></div>
+
+      <!-- Total -->
+      <div class="pmt-total-row">
+        <div class="pmt-total-label">Total Trip Cost (Estimated)</div>
+        <div class="pmt-total-amount" id="pmt-total">₹0</div>
+      </div>
+      <div class="pmt-perperson" id="pmt-perperson"></div>
+
+      <!-- UPI Box -->
+      <div class="pmt-upi-box">
+        <div class="pmt-upi-left">
+          <div class="pmt-upi-title">Pay via UPI</div>
+          <div class="pmt-upi-id">
+            <span class="pmt-upi-label">UPI ID</span>
+            <span class="pmt-upi-val">9579114962@ibl</span>
+            <button class="pmt-copy-btn" onclick="copyUPI()">📋 Copy</button>
+          </div>
+          <div class="pmt-upi-name">WanderWave Trips · IBL Bank</div>
+          <div class="pmt-upi-apps">
+            <button class="pmt-app-btn" onclick="payWithApp('gpay')">🟢 GPay</button>
+            <button class="pmt-app-btn" onclick="payWithApp('phonepe')">🟣 PhonePe</button>
+            <button class="pmt-app-btn" onclick="payWithApp('paytm')">🔵 Paytm</button>
+            <button class="pmt-app-btn" onclick="payWithApp('bhim')">🟠 BHIM</button>
+            <button class="pmt-app-btn" onclick="payWithApp('upi')">🏦 Any UPI</button>
+          </div>
+        </div>
+        <div class="pmt-qr-wrap">
+          <div class="pmt-qr-label">Scan to Pay</div>
+          <canvas id="pmt-qr-canvas" width="160" height="160"></canvas>
+          <div class="pmt-qr-sub" id="pmt-qr-sub">Generating QR…</div>
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div class="pmt-status-row">
+        <div class="pmt-status-block">
+          <span class="pmt-dot" id="pmt-dot"></span>
+          <span id="pmt-status-text">Awaiting payment</span>
+        </div>
+        <div class="pmt-status-actions">
+          <button class="pmt-mark-btn" onclick="markPaid()">✓ Mark as Paid</button>
+          <button class="pmt-split-btn" onclick="showSplitModal()">⚡ Split Among Team</button>
+        </div>
+      </div>
+
+      <!-- Payment Log -->
+      <div id="pmt-history-wrap" style="display:none">
+        <div class="pmt-history-title">💰 Payment Log</div>
+        <div id="pmt-history-list"></div>
+      </div>
+    </div>
+
+    <!-- Split Modal -->
+    <div id="split-modal" class="split-overlay" style="display:none" onclick="if(event.target===this)closeSplitModal()">
+      <div class="split-box">
+        <div class="split-head">
+          <h3>⚡ Split Among Team</h3>
+          <button onclick="closeSplitModal()">✕</button>
+        </div>
+        <div id="split-body"></div>
+      </div>
+    </div>
+
+    <div class="step-foot"><button class="btn-back" onclick="goStep(4)">← Back to Days</button></div>
+  </div>
+</div>
+
+<!-- ======= PROFILE ======= -->
+<div id="page-profile" class="page">
+  <div class="page-top-banner" style="--bg:linear-gradient(135deg,#1a0a2e,#2d1254)">
+    <div class="ptb-content">
+      <div class="section-eyebrow" style="color:rgba(255,255,255,0.6)">Company</div>
+      <h1 class="ptb-title">Your Profile</h1>
+      <p>Company details and employee roster</p>
+    </div>
+    <div class="ptb-emoji">👥</div>
+  </div>
+  <div class="profile-body">
+    <div class="pcard">
+      <div class="pcard-head">
+        <div class="co-ava" id="co-ava">TC</div>
+        <div class="pstats">
+          <div class="pstat"><div class="pstat-n" id="ps-emp">0</div><div class="pstat-l">Employees</div></div>
+          <div class="pstat"><div class="pstat-n" id="ps-plans">0</div><div class="pstat-l">Plans Sent</div></div>
+        </div>
+      </div>
+      <h3 class="pcard-h">Organisation Details</h3>
+      <div class="pf-grid">
+        <div class="pf-group"><label>Company Name</label><input type="text" id="comp-name" placeholder="e.g. Infosys Ltd."/></div>
+        <div class="pf-group"><label>Industry</label>
+          <select id="comp-industry"><option value="">Select…</option><option>Technology</option><option>Finance</option><option>Healthcare</option><option>Manufacturing</option><option>Retail</option><option>Education</option><option>Other</option></select>
+        </div>
+        <div class="pf-group"><label>HR Email</label><input type="email" id="comp-email" placeholder="hr@company.com"/></div>
+        <div class="pf-group"><label>City</label><input type="text" id="comp-city" placeholder="Pune"/></div>
+      </div>
+      <button class="btn-pop" onclick="saveProfile()">Save Profile</button>
+    </div>
+    <div class="pcard">
+      <h3 class="pcard-h">Employee Roster</h3>
+      <p class="pcard-sub">People who will receive trip plan emails</p>
+      <div class="emp-add">
+        <input type="text" id="emp-name" placeholder="Full name"/>
+        <input type="email" id="emp-email" placeholder="email@company.com"/>
+        <button class="btn-pop small" onclick="addEmployee()">+ Add</button>
+      </div>
+      <div id="emp-list" class="emp-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= MY PLANS ======= -->
+<div id="page-myplans" class="page">
+  <div class="page-top-banner" style="--bg:linear-gradient(135deg,#0c1624,#0e2640)">
+    <div class="ptb-content">
+      <div class="section-eyebrow" style="color:rgba(255,255,255,0.6)">Archive</div>
+      <h1 class="ptb-title">My Plans</h1>
+      <p>All previously created trip plans</p>
+    </div>
+    <div class="ptb-emoji">🗂️</div>
+  </div>
+  <div class="myplans-body">
+    <div id="plans-list" class="plans-list"></div>
+  </div>
+</div>
+
+<!-- CONFETTI -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
