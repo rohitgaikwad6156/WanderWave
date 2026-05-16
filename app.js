@@ -10,6 +10,56 @@ const S={
   plans:JSON.parse(localStorage.getItem('tm_plans')||'[]')
 };
 
+// ===== BACKEND API LAYER =====
+const CLIENT_ID=(()=>{
+  let id=localStorage.getItem('ww_client_id');
+  if(!id){id='ww_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2);localStorage.setItem('ww_client_id',id);}
+  return id;
+})();
+
+function _apiFetch(path,opts){return fetch(path,opts).catch(()=>null);}
+
+function apiGet(path,params){
+  const url=new URL(path,location.origin);
+  url.searchParams.set('clientId',CLIENT_ID);
+  if(params)Object.entries(params).forEach(([k,v])=>url.searchParams.set(k,String(v)));
+  return _apiFetch(url.toString()).then(r=>r&&r.ok?r.json():null).catch(()=>null);
+}
+
+function apiPost(path,body){
+  return _apiFetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body,clientId:CLIENT_ID})})
+    .then(r=>r&&r.ok?r.json():null).catch(()=>null);
+}
+
+function apiDelete(path,params){
+  const url=new URL(path,location.origin);
+  url.searchParams.set('clientId',CLIENT_ID);
+  if(params)Object.entries(params).forEach(([k,v])=>url.searchParams.set(k,String(v)));
+  return _apiFetch(url.toString(),{method:'DELETE'}).then(r=>r&&r.ok?r.json():null).catch(()=>null);
+}
+
+async function loadServerData(){
+  try{
+    const [profile,emps,plans]=await Promise.all([apiGet('/api/profile'),apiGet('/api/employees'),apiGet('/api/plans')]);
+    if(profile){
+      const c={name:profile.companyName||'',industry:profile.industry||'',email:profile.hrEmail||'',city:profile.city||''};
+      S.company=c;localStorage.setItem('tm_company',JSON.stringify(c));loadProfile();
+    }
+    if(emps&&emps.length>0){
+      S.employees=emps.map(e=>({name:e.name,email:e.email}));
+      localStorage.setItem('tm_employees',JSON.stringify(S.employees));loadEmpList();updateStats();
+    }
+    if(plans&&plans.length>0){
+      S.plans=plans.map(p=>({
+        id:Number(p.id)||p.id,dest:p.dest,destId:p.destId,destEmoji:p.destEmoji,
+        route:p.route,days:p.days,startDate:p.startDate,teamSize:p.teamSize,sentTo:p.sentTo,
+        dayPlans:p.dayPlans||{},routeDetails:p.routeDetails||{},company:p.company,date:p.date
+      }));
+      localStorage.setItem('tm_plans',JSON.stringify(S.plans));updateStats();
+    }
+  }catch(e){/* fall back to localStorage */}
+}
+
 const LOADER_MSGS=[
   'Booking your seats','Preparing routes','Loading destination data',
   'Checking availability','Curating menus','Scanning locations',
@@ -37,6 +87,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   loadPlans();
   updateStats();
   showPage('home');
+  loadServerData();
 
   // nav shadow + scrolled class
   window.addEventListener('scroll',()=>{
@@ -904,6 +955,7 @@ function savePlan(){
 
   S.plans.push(plan);
   localStorage.setItem('tm_plans',JSON.stringify(S.plans));
+  apiPost('/api/plans',plan);
   updateStats();
 
   btn.textContent='✓ Saved!';
@@ -924,6 +976,7 @@ function saveProfile(){
   localStorage.setItem('tm_company',JSON.stringify(S.company));
   const init=(S.company.name||'TC').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
   document.getElementById('co-ava').textContent=init;
+  apiPost('/api/profile',{companyName:S.company.name,industry:S.company.industry,hrEmail:S.company.email,city:S.company.city});
   showToast('Profile saved');
 }
 function loadProfile(){
@@ -944,9 +997,12 @@ function addEmployee(){
   localStorage.setItem('tm_employees',JSON.stringify(S.employees));
   document.getElementById('emp-name').value='';document.getElementById('emp-email').value='';
   loadEmpList();updateStats();
+  apiPost('/api/employees',{name,email});
   showToast(`${name} added`);
 }
 function removeEmployee(i){
+  const emp=S.employees[i];
+  if(emp)apiDelete('/api/employees',{email:emp.email});
   S.employees.splice(i,1);
   localStorage.setItem('tm_employees',JSON.stringify(S.employees));
   loadEmpList();updateStats();
@@ -1102,6 +1158,8 @@ function closePlanModal(){
 
 function deletePlan(idx){
   if(!confirm('Delete this plan? This cannot be undone.'))return;
+  const plan=S.plans[idx];
+  if(plan)apiDelete('/api/plans',{id:String(plan.id)});
   S.plans.splice(idx,1);
   localStorage.setItem('tm_plans',JSON.stringify(S.plans));
   closePlanModal();
@@ -1268,6 +1326,7 @@ function markPaid(){
   const log=JSON.parse(localStorage.getItem(key+'_log')||'[]');
   log.push(entry);
   localStorage.setItem(key+'_log',JSON.stringify(log));
+  apiPost('/api/payments',{destId:S.dest,startDate:S.startDate||'',ref,amount:c.grandTotal,paidAt:now});
   setPaidStatus(true,now,ref);
   renderPaymentLog(key);
   launchConfetti();
